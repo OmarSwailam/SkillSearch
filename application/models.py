@@ -14,7 +14,7 @@ class Profile(models.Model):
     job_title = models.CharField(max_length=100, null=True, blank=True)
     bio = models.TextField(max_length=1024, null=True, blank=True)
     profile_image = models.ImageField(
-        null=True, blank=True, default='profiles/user-default.png', upload_to='profiles/')
+        null=True, blank=True, default='user-default.png', upload_to='profiles/')
     github_link = models.SlugField(null=True, blank=True)
     linkedin_link = models.SlugField(null=True, blank=True)
     website_link = models.SlugField(null=True, blank=True)
