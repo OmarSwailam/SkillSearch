@@ -19,38 +19,68 @@
     <!-- Css -->
     <link rel="stylesheet" href="static/styles/styles.css">
 
+    <!-- JavaScript -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="static/js/main.js"></script>
+
+
 </head>
 
 <body>
 
+    {% load static %}
     <div class="container">
+
         <header
             class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+
             <ul class="nav">
-                <li class="nav-item"><a href="#" class="nav-link active" aria-current="page">Home</a></li>
+                <li class="nav-item"><a href="{% url 'index' %}" class="nav-link active" aria-current="page">Home</a>
+                </li>
             </ul>
 
             <div class="col-md-3 text-end">
                 <div class="flex-shrink-0 dropdown">
                     <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser2"
                         data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Cat03.jpg/1200px-Cat03.jpg"
-                            alt="profile picture" width="32" height="32" class="rounded-circle">
+                        {% if user.is_authenticated %}
+                        <img src="{{ user.profile.profile_image.url }}" alt="" width="32" height="32"
+                            class="rounded-circle">
+                        {% else %}
+                        <img src="{% static 'images/user-default.png' %}" alt="" width="32" height="32"
+                            class="rounded-circle">
+                        {% endif %}
                     </a>
+
                     <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
+                        {% if user.is_authenticated %}
                         <li><a class="dropdown-item" href="#">New project...</a></li>
-                        <li><a class="dropdown-item" href="#">Profile</a></li>
+                        <li><a class="dropdown-item" href="{% url 'profile' %}">Profile</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
-                        <li><a class="dropdown-item" href="#">Sign out</a></li>
+                        <li><a class="dropdown-item" href="{% url 'logout' %}">Sign out</a></li>
+                        {% else %}
+                        <li><a class="dropdown-item" href="{% url 'login' %}">Login</a></li>
+                        <li><a class="dropdown-item" href="#">Register</a></li>
+                        {% endif %}
+
                     </ul>
+
                 </div>
 
             </div>
         </header>
 
     </div>
+
+    {% if messages %}
+    {% for message in messages %}
+    <div id="alert" class="alert alert-{{ message.tags }}" role="alert">
+        <p>{{ message }}</p>
+    </div>
+    {% endfor %}
+    {% endif %}
 
     {% block content %}
 
