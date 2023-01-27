@@ -1,3 +1,14 @@
+.main-heading {
+    position: relative;
+    font-family: "Raleway", sans-serif;
+    font-weight: 300;
+    font-size: 40px;
+    color: #080808;
+    -webkit-transition: all 0.4s ease 0s;
+    -o-transition: all 0.4s ease 0s;
+    transition: all 0.4s ease 0s;
+}
+
 .profile-name {
     padding: 0;
     margin: 0;
@@ -32,8 +43,20 @@
 }
 
 
-.alert{
+.alert {
     position: absolute;
     z-index: 101;
     right: 10px;
+    margin: 0;
 }
+
+.btn {
+    border-radius: 10%;
+}
+
+.errorlist {
+    color: red;
+    list-style-type: none;
+    margin: 0;
+}
+
