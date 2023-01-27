@@ -44,18 +44,23 @@
                     <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser2"
                         data-bs-toggle="dropdown" aria-expanded="false">
                         {% if user.is_authenticated %}
-                        <img src="{{ user.profile.profile_image.url }}" alt="" width="32" height="32"
-                            class="rounded-circle">
+                        <div class="image-container nav-inline">
+                            <img src="{{ user.profile.profile_image.url }}" alt="" class="profile-image image-container-sm">
+                        </div>
+
                         {% else %}
-                        <img src="{% static 'images/user-default.png' %}" alt="" width="32" height="32"
-                            class="rounded-circle">
+                        <div class="image-container nav-inline">
+                            <img src="{% static 'images/user-default.png' %}" alt="" class="profile-image image-container-sm">
+                        </div>
+
                         {% endif %}
                     </a>
 
                     <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
                         {% if user.is_authenticated %}
+                        <li><a class="dropdown-item" href="{% url 'profile' %}">{{ request.user.name }}</a></li>
                         <li><a class="dropdown-item" href="#">New project...</a></li>
-                        <li><a class="dropdown-item" href="{% url 'profile' %}">Profile</a></li>
+                        <li><a class="dropdown-item" href="{% url 'profile-settings' %}">settings</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>

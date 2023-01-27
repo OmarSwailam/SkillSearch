@@ -17,7 +17,12 @@
     font-size: 40px;
     text-transform: uppercase;
     color: #080808;
+}
 
+.profile-image {
+    margin: auto;
+    object-fit: cover;
+    border-radius: 50%
 }
 
 .job-title {
@@ -42,6 +47,19 @@
     text-align: center;
 }
 
+.image-container-sm {
+    width: 32px;
+    height: 32px;
+}
+
+.image-container-lg {
+    width: 200px;
+    height: 200px;
+}
+
+.nav-inline {
+    display: inline-block
+}
 
 .alert {
     position: absolute;
