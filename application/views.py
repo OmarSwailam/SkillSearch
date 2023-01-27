@@ -3,8 +3,7 @@ from .models import Profile
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .forms import CustomUserCreationForm
-
+from .forms import CustomUserCreationForm, ProfileForm
 
 
 def register_user(request):
@@ -12,11 +11,14 @@ def register_user(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
-            user = form.save()
-            messages.success(request, 'User were created successfully')
+            user = form.save(commit=False)
+            user.name = user.name.title()
+            user.save()
+            messages.success(
+                request, f'Hey {user.name}, let\'s setup your profile!')
 
             login(request, user)
-            return redirect('index')
+            return redirect('profile-settings')
         else:
             return render(request, 'application/login-register.html', {
                 'page': page,
@@ -64,3 +66,19 @@ def index(request):
 
 def profile(request):
     return render(request, 'application/profile.html')
+
+
+@login_required()
+def profile_settings(request):
+    profile = request.user.profile
+    if request.method == 'POST':
+        form = ProfileForm(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            profile = form.save(commit=False)
+            profile.name = profile.name.title()
+            profile.save()
+            return redirect('profile')
+
+    return render(request, 'application/profile-settings.html', {
+        'form': ProfileForm(instance=profile)
+    })
