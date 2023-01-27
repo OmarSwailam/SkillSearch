@@ -2,32 +2,32 @@
 {% block content %}
 
 {% if page == 'register' %}
-Register
-{% else %}
-
-<div class="auth">
-    <div class="card">
-        <h1>Login</h1>
+<div class="container">
+    <div class="main-section">
+        <h1 class="main-heading">Register</h1>
 
         <form action="" method="post">
             {% csrf_token %}
-            <div>
-                <input type="text" name="username" placeholder="Username"/>
-            </div>
-            <div>
-                <input type="password" name="password" placeholder="••••••••" />
-            </div>
-            <div>
-                <input type="submit" value="Log In" />
-                <a href="">Forget Password?</a>
-            </div>
+            {{ form }}
+            <input class="btn btn-primary" type="submit" value="Register"/>
         </form>
 
-        <div>
-            <p>Don't have an Account?</p>
-            <a href="">Sign Up</a>
-        </div>
+    </div>
+</div>
+{% else %}
+<div class="container">
+    <div class="main-section">
+        <h1 class="main-heading">Login</h1>
 
+        <form action="" method="post">
+            {% csrf_token %}
+            <input class="form-control mb-3" type="email" name="email" placeholder="Email" />
+            <input class="form-control mb-3" type="password" name="password" placeholder="••••••••" />
+            <input class="btn btn-primary" type="submit" value="Log In" />
+            <a href="">Forget Password?</a>
+        </form>
+
+        <p>Don't have an Account? <a href="{% url 'register' %}">Sign Up</a></p>
     </div>
 </div>
 
