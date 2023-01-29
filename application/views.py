@@ -63,6 +63,17 @@ def index(request):
         'profiles': profiles
     })
 
+def others_profile(request, pk):
+    profile = Profile.objects.get(id=pk)
+    if request.user.is_authenticated:
+        if profile == request.user.profile:
+            return redirect('profile')
+    skills = profile.skill_set.all()
+    return render(request, 'application/others-profile.html', {
+        'profile': profile,
+        'skills': skills
+    })
+
 def profile(request):
     profile = request.user.profile
     skills = profile.skill_set.all()

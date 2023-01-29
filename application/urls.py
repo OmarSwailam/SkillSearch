@@ -8,6 +8,7 @@ urlpatterns = [
 
     path('', views.index, name='index'),
     path('profile', views.profile, name='profile'),
+    path('others-profile/<str:pk>', views.others_profile, name='others-profile'),
     path('profile-settings', views.profile_settings, name='profile-settings'),
 
     path('add-skill', views.add_skill, name='add-skill'),
