@@ -30,7 +30,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     date_joined = models.DateTimeField(default=timezone.now)
-    
+
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
@@ -53,12 +53,11 @@ class Profile(models.Model):
     bio = models.TextField(max_length=1024, null=True, blank=True)
     profile_image = models.ImageField(
         null=True, blank=True, default='user-default.png', upload_to='profiles/')
-    github_link = models.SlugField(null=True, blank=True)
-    linkedin_link = models.SlugField(null=True, blank=True)
-    website_link = models.SlugField(null=True, blank=True)
-    twitter_link = models.SlugField(null=True, blank=True)
-    youtube_link = models.SlugField(null=True, blank=True)
-    social_link = models.SlugField(null=True, blank=True)
+    github_link = models.CharField(max_length=2048, null=True, blank=True)
+    linkedin_link = models.CharField(max_length=2048, null=True, blank=True)
+    website_link = models.CharField(max_length=2048, null=True, blank=True)
+    twitter_link = models.CharField(max_length=2048, null=True, blank=True)
+    youtube_link = models.CharField(max_length=2048, null=True, blank=True)
     phone_number = models.IntegerField(null=True, blank=True)
 
     def __str__(self) -> str:

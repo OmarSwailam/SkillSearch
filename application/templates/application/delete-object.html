@@ -1,0 +1,13 @@
+{% extends 'application/layout.html' %}
+{% block content %}
+<div class="container">
+    <a href="{% url 'profile' %}"><i class="fa-solid fa-arrow-left"></i></a>
+    <form action="" method="POST">
+        {% csrf_token %}
+        <p>Are you sure deleting "{{ object }}"?</p>
+        <a href="{% url 'profile' %}">Cancel</a>
+        <input class="btn btn-primary" type="submit" value="Delete" />
+    </form>
+</div>
+
+{% endblock %}

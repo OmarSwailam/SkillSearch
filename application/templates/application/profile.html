@@ -1,4 +1,88 @@
 {% include 'application/layout.html' %}
 {% block content %}
 
+<section class="container-xxl">
+    <div class="row">
+
+        <div class="col-lg-4">
+            <div class="card-body text-center">
+                <img src="{{ profile.profile_image.url}}" alt="" class="img-fluid profile-image image-container-lg">
+                <div class="profile-name">{{ profile.name }}</div>
+                <div class="job-title">{{ profile.job_title }}</div>
+                {% if profile.location %}
+                <p class="text-muted">{{ profile.location }}</p>
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-lg-8">
+
+            <div class="profile-bio">
+                {{ profile.bio }}
+            </div>
+
+            <hr>
+            <div class="d-flex justify-content-center mb-2">
+                {% if profile.github_link %}
+                <div class="social-link">
+                    <a href="{{ profile.github_link }}"><i class="fa-brands fa-github"></i></a>
+                </div>
+                {% endif %}
+
+                {% if profile.linkedin_link %}
+                <div class="social-link">
+                    <a href="{{ profile.linkedin_link }}"><i class="fa-brands fa-linkedin"></i></a>
+                </div>
+                {% endif %}
+
+                {% if profile.website_link %}
+                <div class="social-link">
+                    <a href="{{ profile.website_link }}"><i class="fa-solid fa-globe"></i></a>
+                </div>
+                {% endif %}
+
+                {% if profile.twitter_link %}
+                <div class="social-link">
+                    <a href="{{ profile.twitter_link }}"><i class="fa-brands fa-twitter"></i></a>
+                </div>
+                {% endif %}
+
+                {% if profile.youtube_link %}
+                <div class="social-link">
+                    <a href="{{ profile.youtube_link }}"><i class="fa-brands fa-youtube"></i></a>
+                </div>
+                {% endif %}
+            </div>
+            <hr>
+
+            <div class="row">
+                <div class="col">
+                    <div class="card mb-4 mb-md-0">
+                        <div class="card-body">
+
+                            <div class="sub-heading">
+                                Skills
+                            </div>
+                            <a href="{% url 'add-skill' %}">
+                                <i class="fa-solid fa-plus"></i>
+                            </a>
+                            <br>
+                            {% for skill in skills %}
+                            <div class="skill-tag">
+                                <p>{{ skill }}<a href="{% url 'delete-skill' skill.id %}"> <i
+                                            class="fa-solid fa-xmark"></i></a> </p>
+                            </div>
+                            {% endfor %}
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    </div>
+</section>
+<hr>
+
+
 {% endblock %}

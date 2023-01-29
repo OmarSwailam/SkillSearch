@@ -1,3 +1,13 @@
+.nav-heading {
+    position: relative;
+    font-family: "Raleway", sans-serif;
+    font-weight: 300;
+    font-size: 35px;
+    font-weight: 200;
+    color: #080808;
+
+}
+
 .main-heading {
     position: relative;
     font-family: "Raleway", sans-serif;
@@ -7,6 +17,15 @@
     -webkit-transition: all 0.4s ease 0s;
     -o-transition: all 0.4s ease 0s;
     transition: all 0.4s ease 0s;
+}
+
+.sub-heading {
+    display: inline;
+    font-family: "Raleway", sans-serif;
+    font-weight: 300;
+    font-size: 40px;
+    color: #080808;
+
 }
 
 .profile-name {
@@ -39,7 +58,7 @@
 
 .profile-bio {
     font-family: 'Raleway', sans-serif;
-    font-size: 16px;
+    font-size: 18px;
     line-height: 24px;
 }
 
@@ -48,13 +67,18 @@
 }
 
 .image-container-sm {
-    width: 32px;
-    height: 32px;
+    width: 64px;
+    height: 64px;
+}
+
+.image-container-md {
+    width: 200px;
+    height: 200px;
 }
 
 .image-container-lg {
-    width: 200px;
-    height: 200px;
+    width: 400px;
+    height: 400px;
 }
 
 .nav-inline {
@@ -78,3 +102,60 @@
     margin: 0;
 }
 
+.fa-github:hover {
+    color: black;
+}
+
+.fa-linkedin:hover {
+    color: #016fa5;
+}
+
+.fa-twitter:hover {
+    color: #1D9BF0;
+}
+
+.fa-youtube:hover {
+    color: #FF0000;
+}
+
+.fa-plus {
+    color: green;
+}
+
+.fa-xmark {
+    color: #ae0202;
+}
+.social-link {
+    margin: auto;
+}
+
+.skill-tag {
+    display: inline-block;
+    padding: 0 25px;
+    margin: 5px;
+    height: 50px;
+    font-size: 16px;
+    line-height: 50px;
+    border-radius: 25px;
+    background-color: gainsboro;
+}
+
+.skill-tag>p {
+    font-weight: 500;
+    letter-spacing: 1px;
+}
+
+.add-btn {
+    border-radius: 50%;
+    max-width: 32px;
+    max-height: 32px;
+    background-color: #52b788;
+}
+
+.add-btn:hover {
+    background-color: #3f8c68;
+}
+
+i {
+    font-size: x-large;
+}

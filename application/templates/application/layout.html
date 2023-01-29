@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+{% load static %}
 
 <head>
     <meta charset="utf-8">
@@ -16,12 +17,16 @@
         integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V"
         crossorigin="anonymous"></script>
 
+    <!-- Font awesome -->
+    <script src="https://kit.fontawesome.com/2f8fa49cc3.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://kit.fontawesome.com/2f8fa49cc3.css" crossorigin="anonymous">
+
     <!-- Css -->
-    <link rel="stylesheet" href="static/styles/styles.css">
+    <link rel="stylesheet" href="{% static 'styles/styles.css' %}">
 
     <!-- JavaScript -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="static/js/main.js"></script>
+    <script src="{% static 'js/main.js' %}"></script>
 
 
 </head>
@@ -35,7 +40,8 @@
             class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
 
             <ul class="nav">
-                <li class="nav-item"><a href="{% url 'index' %}" class="nav-link active" aria-current="page">Home</a>
+                <li class="nav-item"><a href="{% url 'index' %}" class="nav-link active nav-heading"
+                        aria-current="page">Home</a>
                 </li>
             </ul>
 
@@ -45,12 +51,14 @@
                         data-bs-toggle="dropdown" aria-expanded="false">
                         {% if user.is_authenticated %}
                         <div class="image-container nav-inline">
-                            <img src="{{ user.profile.profile_image.url }}" alt="" class="profile-image image-container-sm">
+                            <img src="{{ user.profile.profile_image.url }}" alt=""
+                                class="profile-image image-container-sm">
                         </div>
 
                         {% else %}
                         <div class="image-container nav-inline">
-                            <img src="{% static 'images/user-default.png' %}" alt="" class="profile-image image-container-sm">
+                            <img src="{% static 'images/user-default.png' %}" alt=""
+                                class="profile-image image-container-sm">
                         </div>
 
                         {% endif %}
