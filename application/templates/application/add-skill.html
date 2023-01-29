@@ -1,0 +1,12 @@
+{% extends 'application/layout.html' %}
+{% block content %}
+<div class="container">
+    <a href="{% url 'profile' %}"><i class="fa-solid fa-arrow-left"></i></a>
+    <form action="" method="POST">
+        {% csrf_token %}
+        {{ form }}
+        <input class="btn btn-primary" type="submit" value="Add" />
+    </form>
+</div>
+
+{% endblock %}

@@ -76,10 +76,24 @@ class ProfileForm(ModelForm):
         self.fields['website_link'].widget.attrs['placeholder'] = 'Website'
         self.fields['twitter_link'].widget.attrs['placeholder'] = 'Twitter'
         self.fields['youtube_link'].widget.attrs['placeholder'] = 'Youtube'
-        self.fields['social_link'].widget.attrs['placeholder'] = 'Social Media'
         self.fields['phone_number'].widget.attrs['placeholder'] = 'Phone number'
 
         for name, field in self.fields.items():
             field.widget.attrs.update({'class': 'form-control mb-3', })
             field.label = ''
             field.help_text = None
+
+
+class SkillForm(ModelForm):
+    class Meta:
+        model = Skill
+        fields = ['name']
+
+    def __init__(self, *args, **kwargs):
+        super(SkillForm, self).__init__(*args, **kwargs)
+        self.fields['name'].widget.attrs['placeholder'] = 'Skill Name'
+
+        for name, field in self.fields.items():
+            field.widget.attrs.update({'class': 'form-control mb-3', })
+            field.label = ''
+            field.required = True

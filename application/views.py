@@ -3,7 +3,7 @@ from .models import Profile
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .forms import CustomUserCreationForm, ProfileForm
+from .forms import CustomUserCreationForm, ProfileForm, SkillForm
 
 
 def register_user(request):
@@ -50,7 +50,7 @@ def login_user(request):
     })
 
 
-@login_required()
+@login_required(login_url='login')
 def logout_user(request):
     logout(request)
     messages.info(request, 'See you again!')
@@ -63,12 +63,16 @@ def index(request):
         'profiles': profiles
     })
 
-
 def profile(request):
-    return render(request, 'application/profile.html')
+    profile = request.user.profile
+    skills = profile.skill_set.all()
+    return render(request, 'application/profile.html', {
+        'profile': profile,
+        'skills': skills
+    })
 
 
-@login_required()
+@login_required(login_url='login')
 def profile_settings(request):
     profile = request.user.profile
     if request.method == 'POST':
@@ -81,4 +85,30 @@ def profile_settings(request):
 
     return render(request, 'application/profile-settings.html', {
         'form': ProfileForm(instance=profile)
+    })
+
+
+@login_required(login_url='login')
+def add_skill(request):
+    if request.method == 'POST':
+        form = SkillForm(request.POST)
+        if form.is_valid():
+            skill = form.save(commit=False)
+            skill.owner = request.user.profile
+            skill.save()
+            messages.success(request, 'skill added successfully')
+            return redirect('profile')
+    return render(request, 'application/add-skill.html', {
+        'form': SkillForm(),
+    })
+
+
+def delete_skill(request, pk):
+    profile = request.user.profile
+    skill = profile.skill_set.get(id=pk)
+    if request.method == 'POST':
+        skill.delete()
+        return redirect('profile')
+    return render(request, 'application/delete-object.html', {
+        'object': skill
     })

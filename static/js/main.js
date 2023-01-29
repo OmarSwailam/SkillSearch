@@ -19,4 +19,5 @@ document.addEventListener('DOMContentLoaded', function () {
             $(this).alert('close');
         });
     }, 3000);
+
 });
