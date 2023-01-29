@@ -38,6 +38,11 @@
     color: #080808;
 }
 
+.profile-name>a {
+    color: inherit;
+    text-decoration: none;
+}
+
 .profile-image {
     margin: auto;
     object-fit: cover;
@@ -119,12 +124,28 @@
 }
 
 .fa-plus {
+    position: relative;
+    top: 0;
+    transition: top ease 0.5s;
+    color: rgb(0, 160, 0);
+}
+
+.fa-plus:hover {
+    top: -5px;
     color: green;
 }
 
 .fa-xmark {
-    color: #ae0202;
+    position: relative;
+    top: 0;
+    transition: top ease 0.5s;
+    color: rgb(225, 0, 0);
 }
+
+.fa-xmark:hover {
+    top: 5px;
+}
+
 .social-link {
     margin: auto;
 }
@@ -145,15 +166,22 @@
     letter-spacing: 1px;
 }
 
-.add-btn {
-    border-radius: 50%;
-    max-width: 32px;
-    max-height: 32px;
-    background-color: #52b788;
+.skill-tag>p>a {
+    color: inherit;
+    text-decoration: none;
 }
 
-.add-btn:hover {
-    background-color: #3f8c68;
+
+.link-effect {
+    background:
+        linear-gradient(#0099e5 0 0) no-repeat calc(200% - var(--p, 0%)) 100% / 200% var(--p, .08em);
+    transition: .3s var(--t, 0s), background-position .3s calc(.3s - var(--t, 0s));
+}
+
+.link-effect:hover {
+    --p: 100%;
+    --t: .3s;
+    color: #fff;
 }
 
 i {
