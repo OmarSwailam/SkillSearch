@@ -73,3 +73,27 @@ class Skill(models.Model):
 
     def __str__(self) -> str:
         return f'{self.name.capitalize()}'
+
+
+class Project(models.Model):
+    id = models.UUIDField(default=uuid.uuid4, unique=True,
+                          primary_key=True, editable=False)
+    created = models.DateTimeField(auto_now_add=True)
+    owner = models.ForeignKey(
+        Profile, null=True, blank=True, on_delete=models.SET_NULL)
+    title = models.CharField(max_length=200)
+    default_image = models.ImageField(editable=False, default='default.png')
+    description = models.TextField(null=True, blank=True)
+    demo_link = models.CharField(max_length=2048, null=True, blank=True)
+    source_link = models.CharField(max_length=2048, null=True, blank=True)
+
+    class Meta:
+        ordering = ['-created', '-title']
+
+    def __str__(self) -> str:
+        return self.title
+
+
+class ProjectImage(models.Model):
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='images')
+    image = models.ImageField()

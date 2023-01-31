@@ -1,10 +1,9 @@
 from django import forms
-from django.forms import ModelForm
+from django.forms import ModelForm, inlineformset_factory
 from django.contrib.auth.forms import UserCreationForm
-from .models import User, Profile, Skill
+from .models import User, Profile, Skill, Project, ProjectImage
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
-from django.utils.safestring import mark_safe
 
 
 class CustomUserCreationForm(UserCreationForm):
@@ -97,3 +96,35 @@ class SkillForm(ModelForm):
             field.widget.attrs.update({'class': 'form-control mb-3', })
             field.label = ''
             field.required = True
+
+
+class ProjectForm(ModelForm):
+    class Meta:
+        model = Project
+        fields = '__all__'
+        exclude = ('owner',)
+
+    def __init__(self, *args, **kwargs):
+        super(ProjectForm, self).__init__(*args, **kwargs)
+        self.fields['title'].widget.attrs['placeholder'] = 'Project Title'
+        self.fields['title'].required = True
+        self.fields['description'].widget.attrs['placeholder'] = 'description'
+        self.fields['description'].required = True
+        self.fields['demo_link'].widget.attrs['placeholder'] = 'Demo Link'
+        self.fields['source_link'].widget.attrs['placeholder'] = 'Source Link'
+
+        for name, field in self.fields.items():
+            field.widget.attrs.update({'class': 'form-control mb-3', })
+            field.label = ''
+
+
+class ProjectImageForm(ModelForm):
+    class Meta:
+        model = ProjectImage
+        fields = ['image',]
+
+    image = forms.ImageField(
+        widget=forms.ClearableFileInput(attrs={
+            'class': 'form-control'
+        })
+    )

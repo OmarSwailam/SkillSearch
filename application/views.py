@@ -3,7 +3,9 @@ from .models import Profile
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .forms import CustomUserCreationForm, ProfileForm, SkillForm
+from .forms import *
+from django.forms import ModelForm, inlineformset_factory
+from .models import *
 
 
 def register_user(request):
@@ -63,6 +65,7 @@ def index(request):
         'profiles': profiles
     })
 
+
 def others_profile(request, pk):
     profile = Profile.objects.get(id=pk)
     if request.user.is_authenticated:
@@ -74,12 +77,15 @@ def others_profile(request, pk):
         'skills': skills
     })
 
+
 def profile(request):
     profile = request.user.profile
     skills = profile.skill_set.all()
+    projects = profile.project_set.all()
     return render(request, 'application/profile.html', {
         'profile': profile,
-        'skills': skills
+        'skills': skills,
+        'projects': projects,
     })
 
 
@@ -122,4 +128,40 @@ def delete_skill(request, pk):
         return redirect('profile')
     return render(request, 'application/delete-object.html', {
         'object': skill
+    })
+
+def project(request, pk):
+    project = Project.objects.get(id=pk)
+    return render(request, 'application/project.html', {
+        'project': project
+    })
+
+def add_project(request):
+    ImageFormSet = inlineformset_factory(
+        Project, ProjectImage, form=ProjectImageForm,
+        extra=1, can_delete=True, can_delete_extra=True
+    )
+    if request.method == 'POST':
+        projectForm = ProjectForm(request.POST)
+        formset = ImageFormSet(request.POST, request.FILES,
+                               queryset=ProjectImage.objects.none())
+
+        print(formset.is_valid())
+        if projectForm.is_valid() and formset.is_valid():
+            print('valid')
+            project_form = projectForm.save(commit=False)
+            project_form.owner = request.user.profile
+            project_form.save()
+
+            for form in formset.cleaned_data:
+                if form:
+                    image = form['image']
+                    photo = ProjectImage(project=project_form, image=image)
+                    photo.save()
+            messages.success(request, 'Project uploaded successfully')
+            return redirect(request.GET['next'] if request.GET.get('next') else 'profile')
+
+    return render(request, 'application/project-form.html', {
+        'form': ProjectForm(),
+        'formset': ImageFormSet(queryset=ProjectImage.objects.none())
     })
