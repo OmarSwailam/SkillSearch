@@ -1,4 +1,32 @@
 {% include 'application/layout.html' %}
 {% block content %}
+<div class="container main-section">
+    <div class="main-heading"> {{ project.title }} </div>
+    {% if request.user.is_authenticated %}
+    {% if request.user.profile == project.owner %}
+    <a href="{% url 'update-project' project.id %}"><i class="fa-solid fa-pen-to-square"></i></a>
+    &emsp;
+    <a href="{% url 'delete-project' project.id %}"><i class="fa-solid fa-xmark"></i></a>
+    {% endif %}
+    {% endif %}
+    <img src="{{ project.image.url }}" class="card-img">
+
+    <hr>
+    <div class="d-flex justify-content-center mb-2">
+        {% if project.demo_link %}
+        <div class="social-link">
+            <a target="_blank" href="{{ project.demo_link }}"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+        </div>
+        {% endif %}
+        {% if project.source_link %}
+        <div class="social-link">
+            <a target="_blank" href="{{ project.source_link }}"><i class="fa-brands fa-github"></i></a>
+        </div>
+        {% endif %}
+    </div>
+    <hr>
+    <div class="sub-heading">Project Details</div>
+    <div class="project-description">{{ project.description }}</div>
+</div>
 
 {% endblock %}

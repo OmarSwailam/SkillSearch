@@ -67,7 +67,7 @@
                     <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
                         {% if user.is_authenticated %}
                         <li><a class="dropdown-item" href="{% url 'profile' %}">{{ request.user.name }}</a></li>
-                        <li><a class="dropdown-item" href="{% url 'add-project' %}">New project...</a></li>
+                        <li><a class="dropdown-item" href="{% url 'add-project' %}?next={{ request.path }}">New project...</a></li>
                         <li><a class="dropdown-item" href="{% url 'profile-settings' %}">settings</a></li>
                         <li>
                             <hr class="dropdown-divider">

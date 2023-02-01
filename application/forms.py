@@ -1,7 +1,6 @@
-from django import forms
-from django.forms import ModelForm, inlineformset_factory
+from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm
-from .models import User, Profile, Skill, Project, ProjectImage
+from .models import User, Profile, Skill, Project
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 
@@ -116,15 +115,4 @@ class ProjectForm(ModelForm):
         for name, field in self.fields.items():
             field.widget.attrs.update({'class': 'form-control mb-3', })
             field.label = ''
-
-
-class ProjectImageForm(ModelForm):
-    class Meta:
-        model = ProjectImage
-        fields = ['image',]
-
-    image = forms.ImageField(
-        widget=forms.ClearableFileInput(attrs={
-            'class': 'form-control'
-        })
-    )
+        self.fields['image'].label = 'Image'

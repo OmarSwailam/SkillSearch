@@ -1,19 +1,19 @@
 {% extends 'application/layout.html' %}
 {% block content %}
 <div class="container">
-    <a href="{% url 'profile' %}?next={{ request.path }}"><i class="fa-solid fa-arrow-left"></i></a>
+    <a href="{{ request.META.HTTP_REFERER }}"><i class="fa-solid fa-arrow-left"></i></a>
     <form action="" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form }}
 
         {{ formset.management_form }}
         <div id="form-list">
-            <div id="formset">{{ formset }}</div>
-
+            {% for f in formset %}
+            <div id="formset">{{ f }}</div>
+            {% endfor %}
         </div>
         <br>
-        <input id="add-more" class="btn btn-primary" type="button" value="Add more image" />
-        <input class="btn btn-primary" type="submit" value="Add" />
+        <input class="btn btn-primary" type="submit" value="Done" />
     </form>
 </div>
 
