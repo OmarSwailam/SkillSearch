@@ -16,7 +16,7 @@
         {% if project.demo_link %}
         <div class="social-link">
             <a target="_blank" href="{{ project.demo_link }}"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
-        </div>
+        </div>  
         {% endif %}
         {% if project.source_link %}
         <div class="social-link">
@@ -27,6 +27,7 @@
     <hr>
     <div class="sub-heading">Project Details</div>
     <div class="project-description">{{ project.description }}</div>
+    <br>
 </div>
 
 {% endblock %}
