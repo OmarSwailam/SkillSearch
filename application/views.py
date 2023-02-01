@@ -43,7 +43,7 @@ def login_user(request):
         user = authenticate(request, email=email, password=password)
         if user is not None:
             login(request, user)
-            messages.info(request, 'Welcome!')
+            messages.success(request, 'Welcome!')
             return redirect(request.GET['next'] if request.GET.get('next') else 'index')
         else:
             messages.error(request, 'Wrong Email or/and Password')
@@ -62,7 +62,7 @@ def logout_user(request):
 
 def index(request):
     profiles, search_query = searchProfiles(request)
-    profiles, custom_paginator = paginateProfiles(request, profiles, 1)
+    profiles, custom_paginator = paginateProfiles(request, profiles, 6)
     return render(request, 'application/index.html', {
         'profiles': profiles,
         'search_query': search_query,
@@ -132,6 +132,7 @@ def delete_skill(request, pk):
     skill = profile.skill_set.get(id=pk)
     if request.method == 'POST':
         skill.delete()
+        messages.info(request, 'Skill deleted')
         return redirect('profile')
     return render(request, 'application/delete-object.html', {
         'object': skill
@@ -188,6 +189,7 @@ def delete_project(request, pk):
     project = Project.objects.get(id=pk)
     if request.method == 'POST':
         project.delete()
+        messages.info(request, 'Project deleted')
         return redirect('profile')
     return render(request, 'application/delete-object.html', {
         'object': project
