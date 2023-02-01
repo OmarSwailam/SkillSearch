@@ -76,9 +76,11 @@ def others_profile(request, pk):
         if profile == request.user.profile:
             return redirect('profile')
     skills = profile.skill_set.all()
+    projects = profile.project_set.all()
     return render(request, 'application/others-profile.html', {
         'profile': profile,
-        'skills': skills
+        'skills': skills,
+        'projects': projects
     })
 
 

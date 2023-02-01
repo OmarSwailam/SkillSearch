@@ -77,6 +77,28 @@
         </div>
     </div>
     </div>
+    <hr>
+
+    <div class="projects-section justify-content-center">
+        <div class="sub-heading">
+            Projects
+        </div>
+        <div class="row">
+            {% for project in projects %}
+            <div class="col-sm-12 col-md-6 col-lg-4">
+                <div class="card p-3 mb-3">
+                    <div class="main-heading"><a href="{% url 'project' project.id %}">{{ project.title }}</a></div>
+                    <img src="{{ project.image.url }}" class="card-img">
+                    <hr>
+                    {% load custom_filters %}
+                    <div class="">{{ project.description|slice:':200' }}{% if description.bio|s > 200 %}...{% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+
+        </div>
+    </div>
 </section>
 <hr>
 
