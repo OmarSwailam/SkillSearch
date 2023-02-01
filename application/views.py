@@ -5,7 +5,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .forms import (CustomUserCreationForm,
                     ProfileForm, SkillForm, ProjectForm)
-from .models import (Profile, Skill, Project)
+from .models import Profile, Project
+from .utils import searchProfiles, paginateProfiles
 
 
 def register_user(request):
@@ -60,9 +61,12 @@ def logout_user(request):
 
 
 def index(request):
-    profiles = Profile.objects.all()
+    profiles, search_query = searchProfiles(request)
+    profiles, custom_paginator = paginateProfiles(request, profiles, 1)
     return render(request, 'application/index.html', {
-        'profiles': profiles
+        'profiles': profiles,
+        'search_query': search_query,
+        'custom_paginator': custom_paginator
     })
 
 
