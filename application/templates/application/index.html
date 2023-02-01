@@ -1,19 +1,36 @@
 {% include 'application/layout.html' %}
 {% block content %}
+<div class="hero-section">
+    <div class="hero-heading">Skill Search</div>
+    <p class="slang">Find Talented People All Around The Globe</p>
+
+    <form id="searchForm" class="form" action="" method="get">
+        <div class="search-bar">
+            <input id="searchQueryInput" type="text" name="search_query" value="{{ search_query }}"
+                placeholder="Search by a Skill or Person name" />
+
+            <button id="searchQuerySubmit" type="submit" name="searchQuerySubmit"><i
+                    class="fa-solid fa-magnifying-glass"></i></button>
+        </div>
+    </form>
+</div>
 <div class="container">
     <div class="main-section">
+        <hr>
         <div class="row justify-content-center">
 
             {% for profile in profiles %}
             <div class="col-sm-12 col-md-6 col-lg-4">
                 <div class="card p-3 mb-3">
-                    <div class="profile-name"><a href="{% url 'others-profile' profile.id %}">{{ profile.name }}</a></div>
+                    <div class="profile-name"><a href="{% url 'others-profile' profile.id %}">{{ profile.name }}</a>
+                    </div>
                     <div class="job-title">{{ profile.job_title }}</div>
                     <img src="{{ profile.profile_image.url }}" class="card-img profile-image image-container-md"
                         alt="profile-image">
                     <hr>
                     {% load custom_filters %}
-                    <div class="profile-bio">{{ profile.bio|slice:':200' }}{% if profile.bio|s > 200 %}...{% endif %}</div>
+                    <div class="profile-bio">{{ profile.bio|slice:':200' }}{% if profile.bio|s > 200 %}...{% endif %}
+                    </div>
                 </div>
             </div>
             {% endfor %}
@@ -22,6 +39,6 @@
     </div>
 </div>
 
-
+{% include 'application/paginator.html' with query_set=profiles custom_paginator=custom_paginator %}
 
 {% endblock %}
