@@ -2,12 +2,12 @@
 Skill Search is a website for anyone to create a portfolio and show his projects
 
 Used in this project:
-CustomUser - CustomManager - ModelForms - Signals - CustomTemplateTags - Search - Pagnitation
+CustomUser - CustomManager - ModelForms - Signals - CustomTemplateTags - Search - Pagitation
 
 
 Features:
   - Search 
-  - Pagnitation
+  - Pagitation
   - CRUD Profile
   - CRUD Skills
   - CRUD Projects
