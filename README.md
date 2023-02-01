@@ -9,12 +9,14 @@ Features:
   - CRUD Projects
 
 ![screenshot](https://github.com/OmarSwailam/SkillSearch/blob/master/screenshots/Screenshot_20230201_020209.png)
-![screenshot](https://github.com/OmarSwailam/socialmedia/blob/master/screenshots/Screenshot_20230201_020209.png)
-![screenshot](https://github.com/OmarSwailam/socialmedia/blob/master/screenshots/Screenshot_20230201_020223.png)
-![screenshot](https://github.com/OmarSwailam/socialmedia/blob/master/screenshots/Screenshot_20230201_020258.png)
-![screenshot](https://github.com/OmarSwailam/socialmedia/blob/master/screenshots/Screenshot_20230201_020312.png)
-![screenshot](https://github.com/OmarSwailam/socialmedia/blob/master/screenshots/Screenshot_20230108_033604.png)
-![screenshot](https://github.com/OmarSwailam/socialmedia/blob/master/screenshots/Screenshot_20230108_033604.png)
+![screenshot](https://github.com/OmarSwailam/SkillSearch/blob/master/screenshots/Screenshot_20230201_020223.png)
+![screenshot](https://github.com/OmarSwailam/SkillSearch/blob/master/screenshots/Screenshot_20230201_020258.png)
+![screenshot](https://github.com/OmarSwailam/SkillSearch/blob/master/screenshots/Screenshot_20230201_020312.png)
+![screenshot](https://github.com/OmarSwailam/SkillSearch/blob/master/screenshots/Screenshot_20230201_020325.png)
+![screenshot](https://github.com/OmarSwailam/SkillSearch/blob/master/screenshots/Screenshot_20230201_020347.png)
+![screenshot](https://github.com/OmarSwailam/SkillSearch/blob/master/screenshots/Screenshot_20230201_020209.png)
+![screenshot](https://github.com/OmarSwailam/SkillSearch/blob/master/screenshots/Screenshot_20230201_020400.png)
+
 
 Installation:
 
