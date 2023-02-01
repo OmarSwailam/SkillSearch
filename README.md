@@ -3,6 +3,8 @@ Skill Search is a website for anyone to create a portfolio and show his projects
 
 Used in this project:
 CustomUser - CustomManager - ModelForms - Signals - CustomTemplateTags - Search - Pagnitation
+
+
 Features:
   - Search 
   - Pagnitation
@@ -13,17 +15,31 @@ Features:
 
 ![screenshot](https://github.com/OmarSwailam/SkillSearch/blob/master/screenshots/Screenshot_20230201_020209.png)
 
+
+
 ![screenshot](https://github.com/OmarSwailam/SkillSearch/blob/master/screenshots/Screenshot_20230201_020223.png)
+
+
 
 ![screenshot](https://github.com/OmarSwailam/SkillSearch/blob/master/screenshots/Screenshot_20230201_020258.png)
 
+
+
 ![screenshot](https://github.com/OmarSwailam/SkillSearch/blob/master/screenshots/Screenshot_20230201_020312.png)
+
+
 
 ![screenshot](https://github.com/OmarSwailam/SkillSearch/blob/master/screenshots/Screenshot_20230201_020325.png)
 
+
+
 ![screenshot](https://github.com/OmarSwailam/SkillSearch/blob/master/screenshots/Screenshot_20230201_020347.png)
 
+
+
 ![screenshot](https://github.com/OmarSwailam/SkillSearch/blob/master/screenshots/Screenshot_20230201_020209.png)
+
+
 
 ![screenshot](https://github.com/OmarSwailam/SkillSearch/blob/master/screenshots/Screenshot_20230201_020400.png)
 
