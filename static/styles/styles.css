@@ -89,7 +89,7 @@
     font-family: "Raleway", sans-serif;
     font-weight: 300;
     font-size: 45px;
-    color: #080808;
+    color: rgba(0, 140, 255, 0.76);
     -webkit-transition: all 0.4s ease 0s;
     -o-transition: all 0.4s ease 0s;
     transition: all 0.4s ease 0s;
@@ -116,7 +116,7 @@
     font-weight: 300;
     font-size: 40px;
     text-transform: uppercase;
-    color: rgba(0, 140, 255, 0.76);
+    color: black
 }
 
 .profile-name>a {
@@ -284,6 +284,10 @@
 
 }
 
+.projects-section {
+    text-align: center;
+}
+
 .project-image {
     height: 600px;
     object-fit: contain;
@@ -295,12 +299,12 @@
     line-height: 24px;
 }
 
-
+.btn-primary {
+    background-color: rgb(0, 140, 255);
+    background-color: rgb(0, 140, 255);
+    border-color: rgba(0, 140, 255, 0.76);
+}
 
 i {
     font-size: x-large;
-}
-
-hr {
-    color: rgba(0, 140, 255, 0.76);
 }
