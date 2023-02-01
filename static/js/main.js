@@ -20,15 +20,4 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }, 3000);
 
-
-    const addMoreBtn = document.getElementById('add-more')
-    addMoreBtn.addEventListener('click', (event) => {
-        const formList = document.getElementById('form-list')
-        const formSet = document.getElementById('formset').cloneNode(true)
-
-        formSet.setAttribute('id', '')
-        formList.append(formSet)
-    })
-
-
 });

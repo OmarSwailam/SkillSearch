@@ -1,8 +1,9 @@
 from django.contrib import admin
-from .models import User, Profile, Skill, Project, ProjectImage
+from .models import User, Profile, Skill, Project
 
 admin.site.register(User)
 admin.site.register(Skill)
+admin.site.register(Project)
 
 
 class SkillInline(admin.TabularInline):
@@ -13,8 +14,6 @@ class ProjectInline(admin.StackedInline):
     model = Project
 
 
-class ProjectImageInline(admin.TabularInline):
-    model = ProjectImage
 
 
 class ProfileAdmin(admin.ModelAdmin):
@@ -24,13 +23,6 @@ class ProfileAdmin(admin.ModelAdmin):
     ]
 
 
-class ProjectAdmin(admin.ModelAdmin):
-    inlines = [
-        ProjectImageInline,
-    ]
-
-
 
 
 admin.site.register(Profile, ProfileAdmin)
-admin.site.register(Project, ProjectAdmin)
