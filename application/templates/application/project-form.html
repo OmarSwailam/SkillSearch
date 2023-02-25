@@ -4,14 +4,28 @@
     <a href="{{ request.META.HTTP_REFERER }}"><i class="fa-solid fa-arrow-left"></i></a>
     <form action="" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ form }}
+        {% for field in form %}
+        {% if field.name == 'image' %}
+        <img src="{{ featured_image.url }}" style="max-width: 200px;">
+        {% endif %}
+        {% if field.name == 'more_images' %}
+        {% if more_images %}
+        {% for image in more_images %}
+        {% if forloop.first %}
+        <p>Clear:</p>
+        {% endif %}
+        <img class="mb-2" src="{{ image.image.url }}" style="max-width: 200px;">
+        <input type="checkbox" name="delete_images" value="{{ image.id }}">
+        {% if forloop.last %}
+        <p>Add more:</p>
+        {% endif %}
+        {% endfor %}
+        {% endif %}
+        <p>Add more: </p>
+        {% endif %}
 
-        {{ formset.management_form }}
-        <div id="form-list">
-            {% for f in formset %}
-            <div id="formset">{{ f }}</div>
-            {% endfor %}
-        </div>
+        {{ field }}
+        {% endfor %}
         <br>
         <input class="btn btn-primary" type="submit" value="Done" />
     </form>

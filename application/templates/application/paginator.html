@@ -14,15 +14,12 @@
             <a href="?page={{ page }}" class="active p-link" data-page="{{ page }}">{{ page }}</a>
 
     </div>
-
     {% else %}
     <div class="pagination-btn">
             <a href="?page={{ page }}" class="p-link" data-page="{{ page }}">{{ page }}</a>
 
     </div>
-
     {% endif %}
-
     {% endfor %}
 
     {% if query_set.has_next %}

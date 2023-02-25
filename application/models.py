@@ -45,12 +45,12 @@ class User(AbstractBaseUser, PermissionsMixin):
 class Profile(models.Model):
     id = models.UUIDField(default=uuid.uuid4, unique=True,
                           primary_key=True, editable=False)
-    user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
-    name = models.CharField(max_length=200, null=True, blank=True,)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    name = models.CharField(max_length=200)
     location = models.CharField(max_length=200, null=True, blank=True,)
-    email = models.EmailField(max_length=300, null=True, blank=True)
-    job_title = models.CharField(max_length=100, null=True, blank=True)
-    bio = models.TextField(max_length=1024, null=True, blank=True)
+    email = models.EmailField(max_length=300)
+    job_title = models.CharField(max_length=100)
+    bio = models.TextField(max_length=1024)
     profile_image = models.ImageField(
         null=True, blank=True, default='profile-default.png', upload_to='profiles/')
     github_link = models.CharField(max_length=2048, null=True, blank=True)
@@ -58,7 +58,7 @@ class Profile(models.Model):
     website_link = models.CharField(max_length=2048, null=True, blank=True)
     twitter_link = models.CharField(max_length=2048, null=True, blank=True)
     youtube_link = models.CharField(max_length=2048, null=True, blank=True)
-    phone_number = models.IntegerField(null=True, blank=True)
+    phone_number = models.CharField(max_length=15, null=True, blank=True)
 
     def __str__(self) -> str:
         return f'{self.email}'
@@ -68,8 +68,8 @@ class Skill(models.Model):
     id = models.UUIDField(default=uuid.uuid4, unique=True,
                           primary_key=True, editable=False)
     created = models.DateTimeField(auto_now_add=True)
-    owner = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
-    name = models.CharField(max_length=64, null=True, blank=True)
+    owner = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    name = models.CharField(max_length=64)
 
     def __str__(self) -> str:
         return f'{self.name.capitalize()}'
@@ -79,10 +79,9 @@ class Project(models.Model):
     id = models.UUIDField(default=uuid.uuid4, unique=True,
                           primary_key=True, editable=False)
     created = models.DateTimeField(auto_now_add=True)
-    owner = models.ForeignKey(
-        Profile, null=True, blank=True, on_delete=models.SET_NULL)
+    owner = models.ForeignKey(Profile, on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
-    image = models.ImageField(null=True, blank=True, default='default.png', upload_to='images/')
+    image = models.ImageField(default='default.png', upload_to='projects/')
     description = models.TextField(null=True, blank=True)
     demo_link = models.CharField(max_length=2048, null=True, blank=True)
     source_link = models.CharField(max_length=2048, null=True, blank=True)
@@ -93,3 +92,10 @@ class Project(models.Model):
     def __str__(self) -> str:
         return self.title
 
+
+class ProjectImage(models.Model):
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='images/')
+
+    def __str__(self) -> str:
+        return self.project.title
