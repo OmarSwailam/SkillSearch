@@ -51,6 +51,13 @@
                     <a target="_blank" href="{{ profile.youtube_link }}"><i class="fa-brands fa-youtube"></i></a>
                 </div>
                 {% endif %}
+
+                {% if profile.phone_number %}
+                <br>
+                <div class="social-link">
+                    <i class="fa-solid fa-phone"></i></a> {{ profile.phone_number }}
+                </div>
+                {% endif %}
             </div>
             <hr>
 

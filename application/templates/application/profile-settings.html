@@ -5,7 +5,13 @@
         <h1 class="main-heading">Profile Settings</h1>
         <form action="" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
-            {{ form }}
+            {% for field in form %}
+            {% if field.name == 'profile_image' %}
+            <img class="profile-image image-container-md" src="{{ profile.profile_image.url }}">
+            <br>
+            {% endif %}
+            {{ field }}
+            {% endfor %}
             <input class="btn btn-primary" type="submit" value="Save" />
         </form>
     </div>

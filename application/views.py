@@ -5,11 +5,13 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .forms import (CustomUserCreationForm,
                     ProfileForm, SkillForm, ProjectForm)
-from .models import Profile, Project
+from .models import Profile, Project, Skill, ProjectImage
 from .utils import searchProfiles, paginateProfiles
 
 
 def register_user(request):
+    if not request.user.is_anonymous:
+        return redirect('index')
     page = 'register'
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
@@ -35,6 +37,8 @@ def register_user(request):
 
 
 def login_user(request):
+    if not request.user.is_anonymous:
+        return redirect('index')
     page = 'login'
     if request.method == 'POST':
         email = request.POST['email'].lower()
@@ -84,6 +88,7 @@ def others_profile(request, pk):
     })
 
 
+@login_required(login_url='login')
 def profile(request):
     profile = request.user.profile
     skills = profile.skill_set.all()
@@ -107,7 +112,8 @@ def profile_settings(request):
             return redirect('profile')
 
     return render(request, 'application/profile-settings.html', {
-        'form': ProfileForm(instance=profile)
+        'form': ProfileForm(instance=profile),
+        'profile': profile
     })
 
 
@@ -129,7 +135,11 @@ def add_skill(request):
 @login_required(login_url='login')
 def delete_skill(request, pk):
     profile = request.user.profile
-    skill = profile.skill_set.get(id=pk)
+    try:
+        skill = profile.skill_set.get(id=pk)
+    except Skill.DoesNotExist:
+        messages.error(request, 'Skill does not exists')
+        return redirect('index')
     if request.method == 'POST':
         skill.delete()
         messages.info(request, 'Skill deleted')
@@ -141,8 +151,12 @@ def delete_skill(request, pk):
 
 def project(request, pk):
     project = Project.objects.get(id=pk)
+    images = ProjectImage.objects.filter(project=project)
+    for i in images:
+        print(i.image.url)
     return render(request, 'application/project.html', {
-        'project': project
+        'project': project,
+        'images': images
     })
 
 
@@ -152,9 +166,12 @@ def add_project(request):
     if request.method == 'POST':
         form = ProjectForm(request.POST, request.FILES)
         if form.is_valid():
-            form = form.save(commit=False)
-            form.owner = request.user.profile
-            form.save()
+            project = form.save(commit=False)
+            project.owner = request.user.profile
+            project.save()
+            images = request.FILES.getlist('more_images')
+            for image in images:
+                ProjectImage.objects.create(project=project, image=image)
             messages.success(request, 'Project Uploaded Successfully')
             return redirect(request.GET['next'] if request.GET.get('next') else 'profile')
         else:
@@ -168,11 +185,25 @@ def add_project(request):
 
 @login_required(login_url='login')
 def update_project(request, pk):
-    project = Project.objects.get(id=pk)
+    try:
+        project = Project.objects.get(id=pk)
+    except Skill.DoesNotExist:
+        messages.error(request, 'Project does not exist')
+        return redirect('index')
     form = ProjectForm(instance=project)
+
+    featured_image = project.image
+    images = ProjectImage.objects.filter(project=project)
     if request.method == 'POST':
-        form = ProjectForm(request.POST, request.FILES,instance=project)
+        images = request.POST.getlist('delete_images')
+        for image in images:
+            i = ProjectImage.objects.get(id=image)
+            i.delete()
+        form = ProjectForm(request.POST, request.FILES, instance=project)
         if form.is_valid():
+            images = request.FILES.getlist('more_images')
+            for image in images:
+                ProjectImage.objects.create(project=project, image=image)
             form = form.save()
             messages.success(request, 'Project Uploaded Successfully')
             return redirect('project', pk)
@@ -181,12 +212,18 @@ def update_project(request, pk):
             return redirect('project', pk)
     return render(request, 'application/project-form.html', {
         'form': form,
+        'featured_image': featured_image,
+        'more_images': images
     })
 
 
 @login_required(login_url='login')
 def delete_project(request, pk):
-    project = Project.objects.get(id=pk)
+    try:
+        project = Project.objects.get(id=pk)
+    except Skill.DoesNotExist:
+        messages.error(request, 'Project does not exist')
+        return redirect('index')
     if request.method == 'POST':
         project.delete()
         messages.info(request, 'Project deleted')
