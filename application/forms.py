@@ -104,6 +104,7 @@ class ProjectForm(ModelForm):
         'multiple': True
 
     }))
+
     class Meta:
         model = Project
         fields = '__all__'
@@ -126,4 +127,5 @@ class ProjectForm(ModelForm):
                 field.label = 'More images'
         self.fields['image'].label = 'Featured Image*'
 
-    field_order = ['title', 'description', 'image', 'more_images', 'demo_link', 'source_link']
+    field_order = ['title', 'description', 'image',
+                   'more_images', 'demo_link', 'source_link']
