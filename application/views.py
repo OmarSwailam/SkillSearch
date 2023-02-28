@@ -3,231 +3,236 @@ from .models import Profile
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .forms import (CustomUserCreationForm,
-                    ProfileForm, SkillForm, ProjectForm)
-from .models import Profile, Project, Skill, ProjectImage
-from .utils import searchProfiles, paginateProfiles
+from django.contrib.messages.views import SuccessMessageMixin
+from .forms import CustomUserCreationForm
+from .models import Profile, Project, Skill
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import (
+    ListView,
+    DetailView,
+    UpdateView,
+    CreateView,
+    DeleteView,
+)
 
 
 def register_user(request):
     if not request.user.is_anonymous:
-        return redirect('index')
-    page = 'register'
-    if request.method == 'POST':
+        return redirect("index")
+    page = "register"
+    if request.method == "POST":
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
             user.name = user.name.title()
             user.save()
-            messages.success(
-                request, f'Hey {user.name}, let\'s setup your profile!')
+            messages.success(request, f"Hey {user.name}, let's setup your profile!")
 
             login(request, user)
-            return redirect('profile-settings')
+            return redirect("profile-settings")
         else:
-            return render(request, 'application/login-register.html', {
-                'page': page,
-                'form': form
-            })
+            return render(
+                request, "application/login-register.html", {"page": page, "form": form}
+            )
 
-    return render(request, 'application/login-register.html', {
-        'page': page,
-        'form': CustomUserCreationForm()
-    })
+    return render(
+        request,
+        "application/login-register.html",
+        {"page": page, "form": CustomUserCreationForm()},
+    )
 
 
 def login_user(request):
     if not request.user.is_anonymous:
-        return redirect('index')
-    page = 'login'
-    if request.method == 'POST':
-        email = request.POST['email'].lower()
-        password = request.POST['password']
+        return redirect("index")
+    page = "login"
+    if request.method == "POST":
+        email = request.POST["email"].lower()
+        password = request.POST["password"]
 
         user = authenticate(request, email=email, password=password)
         if user is not None:
             login(request, user)
-            messages.success(request, 'Welcome!')
-            return redirect(request.GET['next'] if request.GET.get('next') else 'index')
+            messages.success(request, "Welcome!")
+            return redirect(request.GET["next"] if request.GET.get("next") else "index")
         else:
-            messages.error(request, 'Wrong Email or/and Password')
+            messages.error(request, "Wrong Email or/and Password")
 
-    return render(request, 'application/login-register.html', {
-        'page': page,
-    })
+    return render(
+        request,
+        "application/login-register.html",
+        {
+            "page": page,
+        },
+    )
 
 
-@login_required(login_url='login')
+@login_required(login_url="login")
 def logout_user(request):
     logout(request)
-    messages.info(request, 'See you again!')
-    return redirect('index')
+    messages.info(request, "See you again!")
+    return redirect("index")
 
 
-def index(request):
-    profiles, search_query = searchProfiles(request)
-    profiles, custom_paginator = paginateProfiles(request, profiles, 6)
-    return render(request, 'application/index.html', {
-        'profiles': profiles,
-        'search_query': search_query,
-        'custom_paginator': custom_paginator
-    })
+class SuccessURLMixin:
+    def get_success_url(self):
+        return self.request.user.profile.get_absolute_url()
 
 
-def others_profile(request, pk):
-    profile = Profile.objects.get(id=pk)
-    if request.user.is_authenticated:
-        if profile == request.user.profile:
-            return redirect('profile')
-    skills = profile.skill_set.all()
-    projects = profile.project_set.all()
-    return render(request, 'application/others-profile.html', {
-        'profile': profile,
-        'skills': skills,
-        'projects': projects
-    })
+class HomeView(ListView):
+    model = Profile
+
+    template_name = "application/index.html"
+    context_object_name = "profiles"
+    ordering = ["-id"]
+    paginate_by = 6
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+
+        search_query = self.request.GET.get("search_query", "")
+        if search_query:
+            queryset = queryset.filter_for_profiles(search_query)
+        return queryset
 
 
-@login_required(login_url='login')
-def profile(request):
-    profile = request.user.profile
-    skills = profile.skill_set.all()
-    projects = profile.project_set.all()
-    return render(request, 'application/profile.html', {
-        'profile': profile,
-        'skills': skills,
-        'projects': projects,
-    })
+class ProfileDetailView(LoginRequiredMixin, DetailView):
+    model = Profile
+    template_name = "application/others-profile.html"
+    context_object_name = "profile"
+
+    login_url = "login"
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        queryset = queryset.with_skills_and_projects()
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["skills"] = self.object.skills_list
+        context["projects"] = self.object.projects_list
+        return context
 
 
-@login_required(login_url='login')
-def profile_settings(request):
-    profile = request.user.profile
-    if request.method == 'POST':
-        form = ProfileForm(request.POST, request.FILES, instance=profile)
-        if form.is_valid():
-            profile = form.save(commit=False)
-            profile.name = profile.name.title()
-            profile.save()
-            return redirect('profile')
+class ProfileSettingsUpdateView(LoginRequiredMixin, SuccessURLMixin, UpdateView):
+    template_name = "application/profile-settings.html"
+    model = Profile
+    fields = [
+        "name",
+        "location",
+        "email",
+        "job_title",
+        "bio",
+        "profile_image",
+        "github_link",
+        "linkedin_link",
+        "website_link",
+        "twitter_link",
+        "youtube_link",
+        "phone_number",
+    ]
 
-    return render(request, 'application/profile-settings.html', {
-        'form': ProfileForm(instance=profile),
-        'profile': profile
-    })
-
-
-@login_required(login_url='login')
-def add_skill(request):
-    if request.method == 'POST':
-        form = SkillForm(request.POST)
-        if form.is_valid():
-            skill = form.save(commit=False)
-            skill.owner = request.user.profile
-            skill.save()
-            messages.success(request, 'skill added successfully')
-            return redirect('profile')
-    return render(request, 'application/add-skill.html', {
-        'form': SkillForm(),
-    })
+    login_url = "login"
 
 
-@login_required(login_url='login')
-def delete_skill(request, pk):
-    profile = request.user.profile
-    try:
-        skill = profile.skill_set.get(id=pk)
-    except Skill.DoesNotExist:
-        messages.error(request, 'Skill does not exists')
-        return redirect('index')
-    if request.method == 'POST':
-        skill.delete()
-        messages.info(request, 'Skill deleted')
-        return redirect('profile')
-    return render(request, 'application/delete-object.html', {
-        'object': skill
-    })
+class SkillCreateView(
+    LoginRequiredMixin, SuccessMessageMixin, SuccessURLMixin, CreateView
+):
+    template_name = "application/add-skill.html"
+    model = Skill
+    fields = ["name"]
+    success_message = "%(name)s was created successfully"
+
+    login_url = "login"
+
+    def form_valid(self, form):
+        form.instance.owner = self.request.user.profile
+        return super().form_valid(form)
 
 
-def project(request, pk):
-    project = Project.objects.get(id=pk)
-    images = ProjectImage.objects.filter(project=project)
-    for i in images:
-        print(i.image.url)
-    return render(request, 'application/project.html', {
-        'project': project,
-        'images': images
-    })
+class SkillDeleteView(LoginRequiredMixin, SuccessURLMixin, DeleteView):
+    template_name = "application/delete-skill.html"
+    model = Skill
+    context_object_name = "skill"
+
+    login_url = "login"
 
 
-@login_required(login_url='login')
-def add_project(request):
-    form = ProjectForm()
-    if request.method == 'POST':
-        form = ProjectForm(request.POST, request.FILES)
-        if form.is_valid():
-            project = form.save(commit=False)
-            project.owner = request.user.profile
-            project.save()
-            images = request.FILES.getlist('more_images')
-            for image in images:
-                ProjectImage.objects.create(project=project, image=image)
-            messages.success(request, 'Project Uploaded Successfully')
-            return redirect(request.GET['next'] if request.GET.get('next') else 'profile')
-        else:
-            form = ProjectForm(request.POST)
-            return redirect(request.GET['next'] if request.GET.get('next') else 'index')
+class ProjectListView(LoginRequiredMixin, ListView):
+    template_name = "application/projects.html"
+    model = Project
+    context_object_name = "projects"
 
-    return render(request, 'application/project-form.html', {
-        'form': form,
-    })
+    login_url = "login"
+
+    def get_queryset(self):
+        queryset = super().get_queryset().get_images()
+        queryset = queryset.filter(owner=self.request.user.profile)
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["images"] = self.object.images_list
+        return context
 
 
-@login_required(login_url='login')
-def update_project(request, pk):
-    try:
-        project = Project.objects.get(id=pk)
-    except Skill.DoesNotExist:
-        messages.error(request, 'Project does not exist')
-        return redirect('index')
-    form = ProjectForm(instance=project)
+class ProjectDetailView(LoginRequiredMixin, DetailView):
+    template_name = "application/project-detail.html"
+    model = Project
+    context_object_name = "project"
 
-    featured_image = project.image
-    images = ProjectImage.objects.filter(project=project)
-    if request.method == 'POST':
-        images = request.POST.getlist('delete_images')
-        for image in images:
-            i = ProjectImage.objects.get(id=image)
-            i.delete()
-        form = ProjectForm(request.POST, request.FILES, instance=project)
-        if form.is_valid():
-            images = request.FILES.getlist('more_images')
-            for image in images:
-                ProjectImage.objects.create(project=project, image=image)
-            form = form.save()
-            messages.success(request, 'Project Uploaded Successfully')
-            return redirect('project', pk)
-        else:
-            form = ProjectForm(request.POST)
-            return redirect('project', pk)
-    return render(request, 'application/project-form.html', {
-        'form': form,
-        'featured_image': featured_image,
-        'more_images': images
-    })
+    login_url = "login"
+
+    def get_queryset(self):
+        queryset = super().get_queryset().get_images()
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["images"] = self.object.images_list
+        return context
 
 
-@login_required(login_url='login')
-def delete_project(request, pk):
-    try:
-        project = Project.objects.get(id=pk)
-    except Skill.DoesNotExist:
-        messages.error(request, 'Project does not exist')
-        return redirect('index')
-    if request.method == 'POST':
-        project.delete()
-        messages.info(request, 'Project deleted')
-        return redirect('profile')
-    return render(request, 'application/delete-object.html', {
-        'object': project
-    })
+class ProjectCreateView(
+    LoginRequiredMixin, SuccessMessageMixin, SuccessURLMixin, CreateView
+):
+    template_name = "application/add-project.html"
+    model = Project
+    fields = [
+        "title",
+        "description",
+        "image",
+        "demo_link",
+        "source_link",
+    ]
+    success_message = "%(title)s was created successfully"
+
+    login_url = "login"
+
+    def form_valid(self, form):
+        form.instance.owner = self.request.user.profile
+        return super().form_valid(form)
+
+
+class ProjectDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
+    template_name = "application/project-delete.html"
+    model = Project
+    context_object_name = "project"
+
+    login_url = "login"
+
+
+class ProjectUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
+    template_name = "application/project-update.html"
+    model = Project
+    fields = [
+        "title",
+        "description",
+        "image",
+        "demo_link",
+        "source_link",
+    ]
+    success_message = "%(title)s was updated successfully"
+
+    login_url = "login"

@@ -78,6 +78,8 @@
                                 <p>{{ skill }}<a href="{% url 'delete-skill' skill.id %}"> <i
                                             class="fa-solid fa-xmark"></i></a> </p>
                             </div>
+                            {% empty %}
+                            <p>No skills added yet</p>
                             {% endfor %}
 
                         </div>
