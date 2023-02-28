@@ -1,22 +1,58 @@
 from django.urls import path
 from . import views
-from django.contrib.auth import views as auth_views
 
 urlpatterns = [
-    path('register', views.register_user, name='register'),
-    path('login', views.login_user, name='login'),
-    path('logout', views.logout_user, name='logout'),
-
-    path('', views.index, name='index'),
-    path('profile', views.profile, name='profile'),
-    path('others-profile/<str:pk>', views.others_profile, name='others-profile'),
-    path('profile-settings', views.profile_settings, name='profile-settings'),
-
-    path('add-skill', views.add_skill, name='add-skill'),
-    path('delete-skill/<str:pk>', views.delete_skill, name='delete-skill'),
-
-    path('project/<str:pk>', views.project, name='project'),
-    path('add-project', views.add_project, name='add-project'),
-    path('update-project/<str:pk>', views.update_project, name='update-project'),
-    path('delete-project/<str:pk>', views.delete_project, name='delete-project'),
+    # Authentication
+    path("register", views.register_user, name="register"),
+    path("login", views.login_user, name="login"),
+    path("logout", views.logout_user, name="logout"),
+    # Skill Search
+    path(
+        "",
+        views.HomeView.as_view(),
+        name="index",
+    ),
+    # Profile
+    path(
+        "profile/<uuid:pk>",
+        views.ProfileDetailView.as_view(),
+        name="profile-detail",
+    ),
+    path(
+        "profile-settings/<uuid:pk>",
+        views.ProfileSettingsUpdateView.as_view(),
+        name="profile-settings",
+    ),
+    # Skills
+    path(
+        "skill/add",
+        views.SkillCreateView.as_view(),
+        name="add-skill",
+    ),
+    path(
+        "skill/delete/<uuid:pk>",
+        views.SkillDeleteView.as_view(),
+        name="delete-skill",
+    ),
+    # CRUD Projects
+    path(
+        "project/<uuid:pk>",
+        views.ProjectDetailView.as_view(),
+        name="project",
+    ),
+    path(
+        "project/add",
+        views.ProjectCreateView.as_view(),
+        name="add-project",
+    ),
+    path(
+        "project/update/<uuid:pk>",
+        views.ProjectUpdateView.as_view(),
+        name="update-project",
+    ),
+    path(
+        "project/delete/<uuid:pk>",
+        views.ProjectDeleteView.as_view(),
+        name="delete-project",
+    ),
 ]
