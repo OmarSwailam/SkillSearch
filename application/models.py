@@ -1,3 +1,6 @@
+import uuid
+
+from django.urls import reverse
 from django.utils import timezone
 from django.db import models
 from django.contrib.auth.models import (
@@ -5,7 +8,8 @@ from django.contrib.auth.models import (
     PermissionsMixin,
     BaseUserManager,
 )
-import uuid
+
+from .managers import ProfileManager, ProjectManager
 
 
 class UserManager(BaseUserManager):
@@ -93,14 +97,27 @@ class Profile(BaseAbstractModel, ProfileInfo, SocialLinks):
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
+    objects = ProfileManager()
+
+    def get_absolute_url(self):
+        return reverse("profile-detail", kwargs={"pk": self.id})
+
     def __str__(self) -> str:
         return f"{self.email}"
 
 
 class Skill(BaseAbstractModel):
+    # TODO: add skill level
     name = models.CharField(max_length=64)
 
-    owner = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    owner = models.ForeignKey(
+        Profile,
+        on_delete=models.CASCADE,
+        related_name="skills",
+    )
+
+    def get_absolute_url(self):
+        return reverse("skill-detail", kwargs={"pk": self.id})
 
     def __str__(self) -> str:
         return f"{self.name.capitalize()}"
@@ -113,7 +130,13 @@ class Project(BaseAbstractModel):
     demo_link = models.CharField(max_length=2048, null=True, blank=True)
     source_link = models.CharField(max_length=2048, null=True, blank=True)
 
-    owner = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    owner = models.ForeignKey(
+        Profile,
+        on_delete=models.CASCADE,
+        related_name="projects",
+    )
+
+    objects = ProjectManager()
 
     class Meta:
         ordering = ["-created", "-title"]
