@@ -1,20 +1,21 @@
-{% include 'application/layout.html' %}
-{% block content %}
-<div class="container">
-    <div class="main-section">
-        <h1 class="main-heading">Profile Settings</h1>
-        <form action="" method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
-            {% for field in form %}
-            {% if field.name == 'profile_image' %}
-            <img class="profile-image image-container-md" src="{{ profile.profile_image.url }}">
-            <br>
-            {% endif %}
-            {{ field }}
-            {% endfor %}
-            <input class="btn btn-primary" type="submit" value="Save" />
-        </form>
-    </div>
-</div>
+{% include 'application/layout.html' %} {% block content %} {% load
+crispy_forms_tags %}
+<h1 class="form-group main-heading text-center">Profile Settings</h1>
 
+<div class="form-group container">
+  <form action="" method="post">
+    {% csrf_token %} {{ form | crispy }}
+    <label class="col-md-4 control-label" for="singlebutton"></label>
+    <div class="col-md-4 center-block">
+      <button
+        id="singlebutton"
+        name="singlebutton"
+        type="submit"
+        class="btn btn-primary center-block"
+      >
+        Save
+      </button>
+    </div>
+  </form>
+</div>
 {% endblock %}
