@@ -1,47 +1,63 @@
-{% include 'application/layout.html' %}
-{% block content %}
+{% include 'application/layout.html' %} {% block content %}
 <div class="hero-section">
-    <div class="hero-heading">Skill Search</div>
-    <p class="slang">Find Talented People All Around The Globe</p>
+  <div class="hero-heading">Skill Search</div>
+  <p class="slang">Find Talented People All Around The Globe</p>
 
-    <form id="searchForm" class="form" action="" method="get">
-        <div class="search-bar">
-            <input id="searchQueryInput" type="text" name="search_query" value="{{ search_query }}"
-                placeholder="Search by a Skill or Person name" />
+  <form id="searchForm" class="form" action="" method="get">
+    <div class="search-bar">
+      <input id="searchQueryInput" type="text" name="search_query" value="{{ search_query }}"
+        placeholder="Search by a Skill or Person name" />
 
-            <button id="searchQuerySubmit" type="submit" name="searchQuerySubmit"><i
-                    class="fa-solid fa-magnifying-glass"></i></button>
-        </div>
-    </form>
+      <button id="searchQuerySubmit" type="submit" name="searchQuerySubmit">
+        <i class="fa-solid fa-magnifying-glass"></i>
+      </button>
+    </div>
+  </form>
 </div>
 
 <div class="container">
-    <div class="main-section">
-        <hr>
-        <div class="row justify-content-center">
-
-            {% for profile in profiles %}
-            {% if profile.name and profile.job_title %}
-            <div class="col-sm-12 col-md-6 col-lg-4">
-                <div class="card p-3 mb-3">
-                    <div class="profile-name"><a href="{% url 'others-profile' profile.id %}">{{ profile.name }}</a>
-                    </div>
-                    <div class="job-title">{{ profile.job_title }}</div>
-                    <img src="{{ profile.profile_image.url }}" class="card-img profile-image image-container-md"
-                        alt="profile-image">
-                    <hr>
-                    {% load custom_filters %}
-                    <div class="profile-bio">{{ profile.bio|slice:':200' }}{% if profile.bio|s > 200 %}...{% endif %}
-                    </div>
-                </div>
-            </div>
-            {% endif %}
-            {% endfor %}
-
+  <div class="main-section">
+    <hr />
+    <div class="row justify-content-center">
+      {% for profile in profiles %} {% if profile.name and profile.job_title %}
+      <div class="col-sm-12 col-md-6 col-lg-4">
+        <div class="card p-3 mb-3">
+          <div class="profile-name">
+            <a href="{% url 'profile-detail' profile.id %}">{{ profile.name }}</a>
+          </div>
+          <div class="job-title">{{ profile.job_title }}</div>
+          <img src="{{ profile.profile_image.url }}" class="card-img profile-image image-container-md"
+            alt="profile-image" />
+          <hr />
+          {% load custom_filters %}
+          <div class="profile-bio">
+            {{ profile.bio|slice:':200' }}{% if profile.bio|s > 200 %}...{% endif %}
+          </div>
         </div>
+      </div>
+      {% endif %} {% endfor %}
     </div>
+  </div>
 </div>
-<br>
-{% include 'application/paginator.html' with query_set=profiles custom_paginator=custom_paginator %}
-
+<br />
 {% endblock %}
+
+{% block pagination %} {% if is_paginated %}
+<div class="pagination justify-content-center">
+  <span class="page-links">
+    {% if page_obj.has_previous %}
+    <div class="pagination-btn">
+      <a href="{{ request.path }}?page={{ page_obj.previous_page_number }}" class="active p-link">previous</a>
+    </div>
+    {% endif %}
+    <span class="page-current">
+      Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+    </span>
+    {% if page_obj.has_next %}
+    <div class="pagination-btn">
+      <a href="{{ request.path }}?page={{ page_obj.next_page_number }}" class="p-link">next</a>
+    </div>
+    {% endif %}
+  </span>
+</div>
+{% endif %} {% endblock %}

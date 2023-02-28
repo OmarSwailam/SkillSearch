@@ -1,33 +1,20 @@
+{% block pagination %} {% if is_paginated %}
 <div class="pagination justify-content-center">
-
-    {% if query_set.has_previous %}
-    <div class="pagination-btn">
-        <a href="?page={{ query_set.previous_page_number }}" class="p-link" data-page="{{ query_set.previous_page_number }}"><i class="fa-solid fa-chevron-left"></i></a>
-
-    </div>
-
-    {% endif %}
-
-    {% for page in custom_paginator %}
-    {% if page == query_set.number %}
-    <div class="pagination-btn">
-            <a href="?page={{ page }}" class="active p-link" data-page="{{ page }}">{{ page }}</a>
-
-    </div>
-    {% else %}
-    <div class="pagination-btn">
-            <a href="?page={{ page }}" class="p-link" data-page="{{ page }}">{{ page }}</a>
-
-    </div>
-    {% endif %}
-    {% endfor %}
-
-    {% if query_set.has_next %}
-    <div class="pagination-btn">
-            <a href="?page={{ query_set.next_page_number }}" class="p-link" data-page="{{ query_set.next_page_number }}"><i class="fa-solid fa-chevron-right"></i></a>
-
-    </div>
-
-    {% endif %}
-
+        <span class="page-links">
+                {% if page_obj.has_previous %}
+                <div class="pagination-btn">
+                        <a href="{{ request.path }}?page={{ page_obj.previous_page_number }}"
+                                class="active p-link">previous</a>
+                </div>
+                {% endif %}
+                <span class="page-current">
+                        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                </span>
+                {% if page_obj.has_next %}
+                <div class="pagination-btn">
+                        <a href="{{ request.path }}?page={{ page_obj.next_page_number }}" class="p-link">next</a>
+                </div>
+                {% endif %}
+        </span>
 </div>
+{% endif %} {% endblock %}
