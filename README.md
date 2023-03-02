@@ -6,11 +6,12 @@ CustomUser - CustomManager - ModelForms - Signals - CustomTemplateTags - Search 
 
 
 Features:
-  - Search 
-  - Pagitation
-  - CRUD Profile
-  - CRUD Skills
-  - CRUD Projects
+  •	Implemented a CustomUser Model so users can create their account using Email.
+  •	Used Signals for profile creating after registration.
+  •	Integrated Search functionality that enables employers or clients to find potentia candidates.
+  •	Designed pagination for more efficient navigation through the set of search results.
+  •	Designed the ability to upload multiple images when creating a portfolio project.
+
 
 
 ![screenshot](https://github.com/OmarSwailam/SkillSearch/blob/master/screenshots/Screenshot_20230201_020209.png)
