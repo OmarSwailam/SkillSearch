@@ -1,5 +1,5 @@
 # SkillSearch
-Skill Search is a website for anyone to create a portfolio and show his projects
+Skill Search is a website that allows users to create a professional portfolio to showcase their skills and projects. Additionally, visitors can search for individuals based on certain skills or job titles
 
 Used in this project:
 CustomUser - CustomManager - ModelForms - Signals - CustomTemplateTags - Search - Pagitation
