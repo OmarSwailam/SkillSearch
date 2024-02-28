@@ -5,7 +5,7 @@ Used in this project:
 CustomUser - CustomManager - ModelForms - Signals - CustomTemplateTags - Search - Pagination
 
 [Demonstration video](https://youtu.be/22Q2D44pILE?si=bID70H7IY2edmmvL)
-
+![screenshot](https://github.com/OmarSwailam/SkillSearch/blob/master/screenshots/Screenshot_20230201_020209.png)
 
 Features:
   -	Implemented a CustomUser Model so users can create their account using Email.
