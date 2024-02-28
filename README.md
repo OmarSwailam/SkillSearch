@@ -1,4 +1,4 @@
-# SkillSearch
+# Skill Search
 Skill Search is a website that allows users to create a professional portfolio to showcase their skills and projects. Additionally, visitors can search for individuals based on certain skills or job titles.
 
 Used in this project:
@@ -19,7 +19,7 @@ Features:
 
 #### Clone repository
 ```
-  git clone https://github.com/OmarSwailam/skillsearch.git
+  git clone https://github.com/OmarSwailam/SkillSearch.git
 ```
 
 #### Create a virtualenv(optional)
